@@ -1,0 +1,308 @@
+% !TeX spellcheck = th_TH
+\documentclass[a4paper,12pt]{extbook}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[dvipsnames]{xcolor}
+\usepackage[framemethod=TikZ]{mdframed}
+
+\usepackage{fancyhdr}
+\usepackage{multicol, array, tabularx, enumitem}
+%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{tikz-cd}
+
+% Set the locale for linebreak to Thai
+\XeTeXlinebreaklocale "th"
+% In English, when TeX tries to justify text,
+% it will add some spaces between words
+% For Thai, we "must not" add any space between words
+% i.e. put "zero" space between words
+\XeTeXlinebreakskip = 0pt plus 0pt
+% For a bit better(?) justified output
+\sloppy
+
+\usepackage[top = 1in, bottom = 1in, left=1in, right = 1in]{geometry}
+
+\usepackage{amsthm, amsmath, amssymb, mathtools, indentfirst}
+
+
+%\usepackage[sb]{libertinus}
+\usepackage{lmodern}
+
+% For any unicode characters, require XeTeX/XeLaTeX
+\usepackage{fontspec}
+\defaultfontfeatures{Mapping=tex-text} 
+\setmainfont{Latin Modern Roman}
+% Set main fonts
+% For Thai, I recommend to scale the size to the uppercase size of latin alphabet
+%\setmainfont[Scale=MatchLowercase,Mapping=tex-text]{TH Sarabun New}
+%%\setmainfont{TeX Gyre Termes}				% Free Times
+%%
+%%% Sans font
+%%\setsansfont{TeX Gyre Heros}				% Free Helvetica
+%%
+%%% Monospace font
+%%\setmonofont{TeX Gyre Cursor}				% Free Courier
+%\SetSymbolFont{operators}{normal}{OT1}{tex-gyre-pagella}{m}{n}
+%\DeclareSymbolFont{symbols}{OMS}{cmsy}{m}{n}
+%\DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
+
+%\setmathfont{LibertinusMath-Regular.otf}
+
+%% Because latin font in Sarabun is Sans Serif, we prefer to use Serif font
+\newfontfamily{\thaifont}[Scale=MatchLowercase,Mapping=tex-text]{TH Sarabun New}
+
+% Set environment for Thai fonts
+\newenvironment{thailang}
+{\thaifont}
+{}
+
+% For automatic switching between languages
+\usepackage[Latin,Thai]{ucharclasses}
+
+% When using Thai characters use thailang environment
+\setTransitionTo{Thai}{\begin{thailang}}
+% For other characters, switch back to the original environment
+\setTransitionFrom{Thai}{\end{thailang}}
+
+% Single spacing is too tight for Thai
+\usepackage[nodisplayskipstretch]{setspace}
+\onehalfspacing
+
+\usepackage{etoolbox}
+
+% For thaialph numbering \thAlph
+\usepackage{polyglossia}          
+% Set the normal language to English
+% i.e. numbering, latin characters will use English font
+\setdefaultlanguage{english}
+% When using Thai characters, the font will be automatically changed to Thai font
+\setotherlanguage{thai}
+
+\AtBeginDocument\captionsthai               % Force the caption to Thai
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\theoremstyle{definition}
+\newtheorem{problem}{ปัญหาข้อที่}
+\newtheorem{definition}{บทนิยาม}[chapter]
+\newtheorem{example}{ตัวอย่าง}[section]
+\newtheorem{theorem}{ทฤษฎีบท}[chapter]
+\newtheorem{lemma}{บทตั้ง}[section]
+\newtheorem{corollary}{บทแทรก}[section]
+%\newtheorem{problem}{โจทย์ข้อที่}
+
+\theoremstyle{remark}
+%\newtheorem*{remark}{ข้อสังเกต}
+\newtheorem*{note}{สังเกต}
+
+
+
+\title{การพิสูจน์เบื้องต้น}
+
+%\makeatletter
+%\def\@maketitle{%
+%	\newpage%
+%	\vspace{15 in}%
+%	\begin{center}%
+%		{\color{black}\Huge\bfseries\@title \par}%
+%		\vskip 1.5em%
+%	\end{center}%
+%	\par
+%%	\vskip 1.5em
+%	}
+%\makeatother
+%
+\usepackage[explicit]{titlesec}
+%\makeatletter
+%\def\@makechapterhead#1{%
+%	%%%%\vspace*{50\p@}% %%% removed!
+%	{\parindent \z@ \raggedright \normalfont
+%		\ifnum \c@secnumdepth >\m@ne
+%		\huge\bfseries \@chapapp\space \thechapter
+%		\par\nobreak
+%		\vskip 20\p@
+%		\fi
+%		\interlinepenalty\@M
+%		\Huge \bfseries #1\par\nobreak
+%		\vskip 10\p@
+%}}
+%\def\@makeschapterhead#1{%
+%	%%%%%\vspace*{50\p@}% %%% removed!
+%	{\parindent \z@ \raggedright
+%		\normalfont
+%		\interlinepenalty\@M
+%		\Huge \bfseries  #1\par\nobreak
+%		\vskip 10\p@
+%}}
+%\makeatother
+%
+%\usepackage{tikz}\usetikzlibrary{shapes.misc}
+%\newcommand{\titlebar}[1]{%
+%	\tikz[baseline,trim left=1in,trim right=1in] {
+%		\fill [yellow!35] (1in,-1.5ex) rectangle (#1 + 1.12in,3.5ex);
+%	}%
+%}
+%\titleformat{name=\section,numberless}{\bfseries\large}{}{0in}%
+%{\addcontentsline{toc}{section}{#1}%
+%	\settowidth{\mylength}{#1}\titlebar{\mylength} #1}
+%
+%\newmdenv[%
+%backgroundcolor = RoyalBlue,%
+%hidealllines=true]{extr}
+%
+
+\titleformat
+{\chapter}
+[block]
+{\bfseries\Huge}
+{}
+{0in}
+{#1 \hfill \thechapter}
+[\vspace{-2ex}%
+\color{BurntOrange}\rule{\textwidth}{3pt}]
+
+%\titleformat
+%{\chapter} % command
+%[display] % shape
+%{\bfseries\Large\itshape} % format
+%{Story No. \ \thechapter} % label
+%{0.5ex} % sep
+%{
+%	\rule{\textwidth}{1pt}
+%	\vspace{1ex}
+%	\centering
+%	#1
+%} % before-code
+%[
+%\vspace{-0.5ex}%
+%\rule{\textwidth}{0.3pt}
+%] % after-code
+
+%\BeforeBeginEnvironment{equation*}{\begin{singlespace}}
+%	\AfterEndEnvironment{equation*}{\end{singlespace}\noindent\ignorespaces}
+%\BeforeBeginEnvironment{align}{\begin{onehalfspace}}
+%	\AfterEndEnvironment{align}{\end{onehalfspace}\noindent\ignorespaces}
+
+\newcommand{\q}[1]{``#1''}
+
+\newcommand{\fitch}[1]{
+	
+\begin{minipage}[l]{0.5in}%
+		\begin{equation*}%
+		\begin{nd}%
+		#1	%
+		\end{nd}%
+		\end{equation*}%
+		\vspace{0pt}%
+\end{minipage}%
+
+}
+
+\makeatletter
+\g@addto@macro\normalsize{%
+	\setlength\abovedisplayskip{5pt}
+	\setlength\belowdisplayskip{5pt}
+	\setlength\abovedisplayshortskip{5pt}
+	\setlength\belowdisplayshortskip{5pt}
+}
+\makeatother
+
+\mdfdefinestyle{mystyle}{leftmargin=1.5in,linecolor=blue,innerleftmargin=0.5in,innerleftmargin=0.5in,linewidth=2pt,rightmargin=1.5in}
+\newmdenv[%
+leftmargin=0.5in,rightmargin=0.5in,usetwoside=false]{textbox}
+
+\newcommand{\boxthis}[1]{
+	\begin{textbox}%
+		#1 
+	\end{textbox}%
+}
+
+\DeclarePairedDelimiter{\Set}{\lbrace}{\rbrace}
+
+\DeclareMathOperator{\cod}{cod}
+\DeclareMathOperator{\dom}{dom}
+\tikzcdset{every label/.append style = {font = \small}}
+\begin{document}
+		\begin{titlepage}
+			\begin{flushright}
+				\vspace*{-1.5in}
+				\begin{minipage}[b]{0.7\linewidth}
+					\hfil\begingroup\fontsize{36}{44}\selectfont\bfseries ทฤษฎีของประเภท\\Category Theory{ }\endgroup
+				\end{minipage}
+				\begin{minipage}[b]{2pt}
+					\color{BurntOrange}\rule{6pt}{7in}
+				\end{minipage}	
+				\vskip 1.5em
+				
+				\vspace*{2in}
+				ฉบับร่าง วันที่ \makeatletter\@date\makeatother
+				\thispagestyle{empty}
+				\pagenumbering{gobble}
+			\end{flushright}
+			\pagenumbering{roman}
+			\tableofcontents
+		\end{titlepage}
+		\pagenumbering{arabic}
+		
+		\chapter{บทนำ}
+		\begin{definition}
+			แคเทกอรี (Category) ประกอบด้วย
+			\begin{itemize}
+				\item ลูกศร แทนด้วยสัญลักษณ์ $f, g, h, \ldots$
+				\item วัตถุ แทนด้วยสัญลักษณ์ $A, B, C, \ldots$
+				\item แต่ละลูกศร $f$ จะมีวัตถุที่เกี่ยวข้องอยู่ด้วย คือ $\dom(f), \cod(f)$ เรียกว่า \textit{โดเมน} และ \textit{โคโดเมน} ของ $f$ ตามลำดับ นิยมเขียนด้วยสัญลักษณ์
+				\begin{equation*}
+					f\colon A \rightarrow B
+				\end{equation*}
+				และให้เข้าใจว่า $A = \dom(f)$ และ $B = \cod(f)$
+				\item สำหรับ $f, g$ ที่มีสมบัติว่า $\cod(f) = \dom(g)$ จะมีลูกศร
+				\begin{equation*}
+				g\circ f \colon \dom(f) \to \cod(g)
+				\end{equation*}
+				เรียกลูกศรนี้ว่า\textit{คอมโพสิท}ของ $f$ และ $g$
+				\item สำหรับแต่ละวัตถุ $A$ จะมีลูกศรไปหาตัวมันเอง
+				\begin{equation*}
+					1_A \colon A \to A
+				\end{equation*}
+				เรียกว่า \textit{ลูกศรเอกลักษณ์} ของ $A$
+			\end{itemize}
+				นอกจากนี้แล้ว แคเทกอรีต้องสอดคล้องกับเงื่อนไขดังต่อไปนี้
+					\begin{itemize}
+						\item (สมบัติการจัดกลุ่ม) $h \circ (g \circ f) = (h \circ g) \circ f$ สำหรับลูกศรใด ๆ ที่ซึ่ง $f \colon A \to B, g\colon B \to C, h\colon C \to D$ 
+						\item (สมบัติเอกลักษณ์) $f\circ 1_A = f = 1_A \circ f$ สำหรับทุก ๆ $f \colon A \to B$
+					\end{itemize}
+		\end{definition}
+	
+		\chapter{แคเทกอรีเล็กในบริเวณ}
+		\section{บทตั้งของโยเนดะ}
+		
+		\chapter{การแต่งเติม}
+		
+		\chapter{ลิมิตและลิมิตร่วม}
+		
+		\begin{definition}
+			สำหรับแคเทกอรี $\mathbf C$ ใด ๆ \textit{พุลแบ็ค} (Pullback) ของลูกศร $f, g$ ที่ซึ่ง $\cod(f) = \cod(g)$
+			คือลูกศร $p_1, p_2$ ที่ทำให้ $fp_1 = gp_2$ ดังแผนภาพต่อไปนี้
+			\begin{equation*}
+			\begin{tikzcd}[column sep = huge, row sep=huge]
+			& P \arrow[d, "p_1"] \arrow[r, "p_2"'] & B \arrow[d, "g"] \\
+			& A \arrow[r, "f"']                    & C               
+			\end{tikzcd}
+			\end{equation*}
+			 และสมบัตินี้เป็นสากล นั่นคือสำหรับ $z_1\colon Z \to A$ และ $z_2\colon Z \to B$ ที่มีสมบัติว่า $z_1f = z_2g$ เช่นกัน จะมี $u \colon Z \to P$ เพียงหนึ่งเดียว ซึ่งมีสมบัติว่า $z_1 = p_1u$ และ $z_2 = p_2u$ เป็นไปตามแผนภาพด้านล่าง
+			 
+			\begin{equation*}
+			\begin{tikzcd}[column sep = huge, row sep=5.0em]
+				Z \arrow[rd, "u" description, dotted] \arrow[rrd, "z_2"] \arrow[rdd, "z_1"'] &                                      &                  \\
+				& P \arrow[d, "p_1"] \arrow[r, "p_2"'] & B \arrow[d, "g"] \\
+				& A \arrow[r, "f"']                    & C               
+			\end{tikzcd}
+			\end{equation*}
+		\end{definition}
+		จะเห็นว่าพุลแบ็คมีได้เพียงแบบเดียวขึ้นกับไอโซมอร์ฟิสซึม
+		
+		\section{ทฤษฎีบทฟังก์เตอร์แต่งเติม}
+		
+		\chapter{โมแนด}
+\end{document}
